@@ -12,17 +12,22 @@ const Button = ({ onClick, text }) => (
   </button>
 )
 
+const StatisticsLine = ({text, value}) => {
+  return (
+    <h3>{text} {value}</h3>
+  )
+}
 const Statistics = ({good, neutral, bad}) => {
   if (good > 0 || neutral > 0 || bad > 0) {
     return (
       <div> 
         <h1>Statistics</h1>
-        <h3>good {good}</h3>
-        <h3>neutral {neutral}</h3>
-        <h3>bad {bad}</h3>
-        <h3> all {good + neutral + bad}</h3>
-        <h3> average {(good + neutral + bad) / 3}</h3>
-        <h3> positive {(good / (good + neutral + bad)) * 100}%</h3>
+        <StatisticsLine text="good" value={good}/>
+        <StatisticsLine text="neutral" value={neutral}/>
+        <StatisticsLine text="bad" value={bad}/>
+        <StatisticsLine text="all" value={good + neutral + bad}/>
+        <StatisticsLine text="average" value={(good + neutral + bad) / 3}/>
+        <StatisticsLine text="positive" value={(good / (good + neutral + bad)) * 100 + "%"}/>
       </div>
     )
   }
@@ -44,6 +49,7 @@ const App = () => {
   }
   const doNothing = () => {
     console.log("doing nothing, value before: ", good)
+    setNeutral(neutral + 1)
   }
 
   return (
