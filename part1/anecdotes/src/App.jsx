@@ -10,6 +10,27 @@ const Button = ({ handleClick, text }) => {
     </button>
   )
 }
+
+const MaxAnecdote = ({allVotes, anecdotes}) => {
+  let max = 0
+  let maxIndex = 0
+  for (let i = 0; i < allVotes.length; i++) {
+    if (allVotes[i] > max) {
+      max = allVotes[i]
+      maxIndex = i
+    }
+  }
+  if (allVotes[maxIndex] > 0) {
+    return (
+      <div>
+        <h1>Anecdote with most votes</h1>
+        {anecdotes[maxIndex]}
+        <br />
+        has {max} votes
+      </div>
+    )
+  }
+}
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -40,6 +61,7 @@ const App = () => {
       <br />
       <Button handleClick={handleVoteClick} text="vote" />
       <Button handleClick={handleClick} text="next anecdote" />
+      <MaxAnecdote allVotes={allVotes} anecdotes={anecdotes}/>
     </div>
   )
 }
