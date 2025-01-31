@@ -20,11 +20,19 @@ return (
 )
 } 
 
-const Course = (props) => {
+const Total = ({ parts }) => {
+  return (
+    <>
+      <p>Number of exercises {parts.reduce((acc, part) => acc + part.exercises, 0)}</p>
+    </>
+  )
+}
+const Course = ({ course }) => {
   return (
     <div>
-      <Header course={props.course} />
-      <Content course={props.course} />
+      <Header course={course} />
+      <Content course={course} />
+      <Total parts={course.parts} />
     </div>
   )
 }
@@ -50,11 +58,10 @@ const App = () => {
         id: 3
       },
       {
-        name: 'Panama',
-        exercises: 69,
+        name: 'Redux',
+        exercises: 11,
         id: 4
       }
-
     ]
   }
 
