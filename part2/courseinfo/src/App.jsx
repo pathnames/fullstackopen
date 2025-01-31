@@ -1,3 +1,34 @@
+const Header = (props) => {
+  return (<h1> {props.course.name} </h1>)
+}
+
+const Content = ({ course }) => {
+  return (
+    <>
+      {course.parts.map(({ id, name, exercises }) => (
+        <Part key={id} name={name} exercises={exercises} />
+      ))}
+    </>
+  );
+};
+
+const Part = ({id, name, exercises}) => {
+return (
+  <>
+  <p>{name} {exercises}</p>
+  </>
+)
+} 
+
+const Course = (props) => {
+  return (
+    <div>
+      <Header course={props.course} />
+      <Content course={props.course} />
+    </div>
+  )
+}
+
 const App = () => {
   const course = {
     id: 1,
@@ -17,7 +48,13 @@ const App = () => {
         name: 'State of a component',
         exercises: 14,
         id: 3
+      },
+      {
+        name: 'Panama',
+        exercises: 69,
+        id: 4
       }
+
     ]
   }
 
