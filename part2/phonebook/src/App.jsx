@@ -28,9 +28,16 @@ const App = () => {
       alert(`${newName} is already added to phonebook`)
       return
     }
-    setPersons(persons.concat(nameObject))
-    setNewName('')
-    setNewNumber('')
+    axios
+      .post('http://localhost:3001/persons', nameObject)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+        setNewName('')
+        setNewNumber('')      
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
 
@@ -43,7 +50,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Filter searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
-      <PersonForm addFormData={addFormData} newName={newName} handleNameChange={(event) => setNewName(event.target.value)} newNumber={newNumber} handleNumberChange={(event) => setNewNumber(event.target.value)} />
+      <PersonForm addPerson={addFormData} newName={newName} handleNameChange={(event) => setNewName(event.target.value)} newNumber={newNumber} handleNumberChange={(event) => setNewNumber(event.target.value)} />
       <h2>Numbers</h2>
       <Persons persons={persons} />
     </div>
