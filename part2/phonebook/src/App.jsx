@@ -3,6 +3,7 @@ import PersonForm from '../components/PersonForm'
 import Persons from '../components/Persons'
 import Filter from '../components/Filter'
 import axios from 'axios'
+import phoneService from './services/phone'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,13 +12,13 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
+    phoneService
+      .getAll()
       .then(response => {
         setPersons(response.data)
       })
   }, [])
-  
+
   const addFormData = (event) => {
     event.preventDefault()
     const nameObject = {
@@ -28,12 +29,12 @@ const App = () => {
       alert(`${newName} is already added to phonebook`)
       return
     }
-    axios
-      .post('http://localhost:3001/persons', nameObject)
+    phoneService
+      .create(nameObject)
       .then(response => {
         setPersons(persons.concat(response.data))
         setNewName('')
-        setNewNumber('')      
+        setNewNumber('')
       })
       .catch(error => {
         console.log(error)
@@ -43,13 +44,16 @@ const App = () => {
 
   const handleSearchTermChange = (event) => {
     setSearchTerm(event.target.value)
-    setPersons(persons.filter(person => person.name.includes(searchTerm)))
   }
+
+  const personsToShow = searchTerm === ''
+    ? persons
+    : persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
+      <Persons persons={personsToShow} />
       <PersonForm addPerson={addFormData} newName={newName} handleNameChange={(event) => setNewName(event.target.value)} newNumber={newNumber} handleNumberChange={(event) => setNewNumber(event.target.value)} />
       <h2>Numbers</h2>
       <Persons persons={persons} />
