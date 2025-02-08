@@ -50,10 +50,21 @@ const App = () => {
     ? persons
     : persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
+  const handleDelete = (id) => {
+    if (window.confirm('Do you really want to delete this person?')) {
+      axios
+        .delete(`http://localhost:3001/persons/${id}`)
+        .then(response => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+    }
+  }
   return (
     <div>
       <h2>Phonebook</h2>
-      <Persons persons={personsToShow} />
+      <Filter searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
+      <h2>add a new</h2>
+      <Persons persons={personsToShow} handleDelete={handleDelete}/>
       <PersonForm addPerson={addFormData} newName={newName} handleNameChange={(event) => setNewName(event.target.value)} newNumber={newNumber} handleNumberChange={(event) => setNewNumber(event.target.value)} />
       <h2>Numbers</h2>
       <Persons persons={persons} />
