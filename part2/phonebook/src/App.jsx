@@ -4,12 +4,14 @@ import Persons from '../components/Persons'
 import Filter from '../components/Filter'
 import axios from 'axios'
 import phoneService from './services/phone'
+import AddNotification from '../components/AddNotification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
+  const [addMessage, setAddMessage] = useState(null)
 
   useEffect(() => {
     phoneService
@@ -43,6 +45,10 @@ const App = () => {
         setPersons(persons.concat(response.data))
         setNewName('')
         setNewNumber('')
+        setAddMessage(newName)
+        setTimeout(() => {
+          setAddMessage(null)
+        }, 5000)
       })
       .catch(error => {
         console.log(error)
@@ -70,12 +76,13 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <AddNotification name={addMessage} />
       <Filter searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
       <h2>add a new</h2>
       <Persons persons={personsToShow} handleDelete={handleDelete}/>
       <PersonForm addPerson={addFormData} newName={newName} handleNameChange={(event) => setNewName(event.target.value)} newNumber={newNumber} handleNumberChange={(event) => setNewNumber(event.target.value)} />
       <h2>Numbers</h2>
-      <Persons persons={persons} />
+      <Persons persons={personsToShow} handleDelete={handleDelete}/>
     </div>
   )
 }
