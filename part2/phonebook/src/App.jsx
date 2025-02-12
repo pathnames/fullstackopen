@@ -67,7 +67,7 @@ const App = () => {
   const handleDelete = (id) => {
     if (window.confirm('Do you really want to delete this person?')) {
       axios
-        .delete(`http://localhost:3001/persons/${id}`)
+        .delete(`api/persons/${id}`)
         .then(response => {
           setPersons(persons.filter(person => person.id !== id))
         })
