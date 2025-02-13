@@ -34,24 +34,19 @@ app.delete('/api/notes/:id', (req, res) => {
     res.status(204).end()
 })
 
-app.post('/api/notes', (request, response) => {
-    const body = request.body
+app.post('/api/notes', (req, res) => {
+    const body = req.body
 
-    if (!body.content) {
-        return response.status(400).json({
-            error: 'content missing'
-        })
+    if (body.content === undefined) {
+        return res.status(400).json({ error: 'content missing' })
     }
-
-    const note = {
+    const note = new Note({
         content: body.content,
-        important: Boolean(body.important) || false,
-        id: generateId(),
-    }
-
-    notes = notes.concat(note)
-
-    response.json(note)
+        important: body.important || false
+    })
+    note.save().then(savedNote => {
+        res.json(savedNote)
+    })
 })
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
